@@ -1,0 +1,85 @@
+/* GENERAL */
+body {
+    font-family: Arial, sans-serif;
+    color: #212529;
+}
+.min-vh-75 { min-height: 75vh; }
+
+/* HERO */
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+    padding: 50px 0;
+}
+.hero-card {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    padding: 50px 30px;
+    color: white;
+    backdrop-filter: blur(10px);
+}
+.hero-card h4 { color: #ffc107; }
+
+/* FEATURES */
+.feature-card {
+    height: 100%;
+    padding: 30px 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+}
+.icon-box {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e7f1ff;
+    color: #0d6efd;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* ABOUT */
+.about-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* STEPS */
+.step-card { padding: 30px; }
+.step-number {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+/* CTA */
+.cta-section {
+    background: linear-gradient(135deg, #084298, #0d6efd);
+}
+
+/* NAVBAR */
+.navbar-brand { font-size: 22px; }
+.nav-link { margin-left: 8px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .hero-section { padding: 30px 0; }
+    .hero-card { padding: 35px 20px; }
+}

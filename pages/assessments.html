@@ -1,0 +1,1408 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Assessments | Assessment Platform</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+
+        body {
+            background-color: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0d6efd, #6610f2);
+            color: white;
+            padding: 60px 20px;
+        }
+
+        .assessment-card {
+            border: none;
+            border-radius: 15px;
+            transition: 0.3s;
+            height: 100%;
+        }
+
+        .assessment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .assessment-icon {
+            font-size: 45px;
+        }
+
+        .badge-custom {
+            font-size: 12px;
+        }
+
+        .filter-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        footer {
+            margin-top: 60px;
+            background: #212529;
+            color: white;
+            padding: 30px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container">
+
+        <a class="navbar-brand" href="../index.html">
+            Assessment Platform
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarMenu">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMenu">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html">
+                        Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="assessments.html">
+                        Assessments
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="login.html">
+                        Login
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="register.html">
+                        Register
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../candidate-login.html">
+                        Candidate Login
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero text-center">
+
+    <div class="container">
+
+        <h1 class="display-5 fw-bold">
+            Online Assessments
+        </h1>
+
+        <p class="lead">
+            Test your skills, improve your knowledge and track your progress.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="container py-5">
+
+    <!-- FILTER -->
+
+    <div class="filter-box mb-5">
+
+        <div class="row g-3">
+
+            <div class="col-md-5">
+
+                <label class="form-label">
+                    Search Assessment
+                </label>
+
+                <input type="text"
+                       id="searchInput"
+                       class="form-control"
+                       placeholder="Search by assessment name..."
+                       onkeyup="filterAssessments()">
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Category
+                </label>
+
+                <select id="categoryFilter"
+                        class="form-select"
+                        onchange="filterAssessments()">
+
+                    <option value="all">
+                        All Categories
+                    </option>
+
+                    <option value="programming">
+                        Python Web Developer
+                    </option>
+
+                    <option value="database">
+                        AWS
+                    </option>
+
+                    <option value="web">
+                        React
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Difficulty
+                </label>
+
+                <select id="difficultyFilter"
+                        class="form-select"
+                        onchange="filterAssessments()">
+
+                    <option value="all">
+                        All Levels
+                    </option>
+
+                    <option value="Beginner">
+                        Beginner
+                    </option>
+
+                    <option value="Intermediate">
+                        Intermediate
+                    </option>
+
+                    <option value="Advanced">
+                        Advanced
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="col-md-1 d-flex align-items-end">
+
+                <button class="btn btn-secondary w-100"
+                        onclick="resetFilters()">
+
+                    Reset
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ASSESSMENT CARDS ================= -->
+
+    <div class="row g-4" id="assessmentContainer">
+
+        <div class="col-12" id="uploadedAssessmentsSection" hidden>
+            <h2 class="mb-3">Available Test Papers</h2>
+            <div class="row g-4" id="uploadedAssessmentContainer"></div>
+        </div>
+
+
+        <!-- Python -->
+
+        <div class="col-md-6 col-lg-4 assessment-item"
+             data-category="programming"
+             data-difficulty="Beginner">
+
+            <div class="card assessment-card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="assessment-icon mb-3">
+                        🐍
+                    </div>
+
+                    <h4>
+                        Python Web Developer
+                    </h4>
+
+                    <p class="text-muted">
+                        Assess your knowledge of Python, backend logic,
+                        APIs, and web development fundamentals.
+                    </p>
+
+                    <span class="badge bg-success badge-custom">
+                        Beginner
+                    </span>
+
+                    <span class="badge bg-primary badge-custom">
+                        Python Web Developer
+                    </span>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+                            📝 20 Questions
+                        </span>
+
+                        <span>
+                            ⏱ 30 Minutes
+                        </span>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100 mt-4"
+                            onclick="startAssessment('Python Fundamentals')">
+
+                        Start Assessment
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- JavaScript -->
+
+        <div class="col-md-6 col-lg-4 assessment-item"
+             data-category="web"
+             data-difficulty="Intermediate">
+
+            <div class="card assessment-card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="assessment-icon mb-3">
+                        ⚡
+                    </div>
+
+                    <h4>
+                        React Front-End Developer
+                    </h4>
+
+                    <p class="text-muted">
+                        Test React concepts including components,
+                        state, props, and user experience design.
+                    </p>
+
+                    <span class="badge bg-warning text-dark">
+                        Intermediate
+                    </span>
+
+                    <span class="badge bg-primary">
+                        React
+                    </span>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+                            📝 25 Questions
+                        </span>
+
+                        <span>
+                            ⏱ 40 Minutes
+                        </span>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100 mt-4"
+                            onclick="startAssessment('JavaScript')">
+
+                        Start Assessment
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HTML & CSS -->
+
+        <div class="col-md-6 col-lg-4 assessment-item"
+             data-category="web"
+             data-difficulty="Beginner">
+
+            <div class="card assessment-card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="assessment-icon mb-3">
+                        🌐
+                    </div>
+
+                    <h4>
+                        React UI Essentials
+                    </h4>
+
+                    <p class="text-muted">
+                        Evaluate your knowledge of React UI patterns,
+                        components, styling, and responsive design.
+                    </p>
+
+                    <span class="badge bg-success">
+                        Beginner
+                    </span>
+
+                    <span class="badge bg-info text-dark">
+                        React
+                    </span>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+                            📝 20 Questions
+                        </span>
+
+                        <span>
+                            ⏱ 30 Minutes
+                        </span>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100 mt-4"
+                            onclick="startAssessment('HTML & CSS')">
+
+                        Start Assessment
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MySQL -->
+
+        <div class="col-md-6 col-lg-4 assessment-item"
+             data-category="database"
+             data-difficulty="Intermediate">
+
+            <div class="card assessment-card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="assessment-icon mb-3">
+                        ☁️
+                    </div>
+
+                    <h4>
+                        AWS Cloud Fundamentals
+                    </h4>
+
+                    <p class="text-muted">
+                        Test cloud concepts, deployment basics,
+                        networking, and AWS service fundamentals.
+                    </p>
+
+                    <span class="badge bg-warning text-dark">
+                        Intermediate
+                    </span>
+
+                    <span class="badge bg-dark">
+                        AWS
+                    </span>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+                            📝 25 Questions
+                        </span>
+
+                        <span>
+                            ⏱ 45 Minutes
+                        </span>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100 mt-4"
+                            onclick="startAssessment('MySQL Database')">
+
+                        Start Assessment
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Data Science -->
+
+        <div class="col-md-6 col-lg-4 assessment-item"
+             data-category="data"
+             data-difficulty="Advanced">
+
+            <div class="card assessment-card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="assessment-icon mb-3">
+                        📊
+                    </div>
+
+                    <h4>
+                        Data Science
+                    </h4>
+
+                    <p class="text-muted">
+                        Test your knowledge of Python,
+                        statistics, data analysis and machine learning.
+                    </p>
+
+                    <span class="badge bg-danger">
+                        Advanced
+                    </span>
+
+                    <span class="badge bg-success">
+                        Data Science
+                    </span>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+                            📝 30 Questions
+                        </span>
+
+                        <span>
+                            ⏱ 60 Minutes
+                        </span>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100 mt-4"
+                            onclick="startAssessment('Data Science')">
+
+                        Start Assessment
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Bootstrap -->
+
+        <div class="col-md-6 col-lg-4 assessment-item"
+             data-category="web"
+             data-difficulty="Intermediate">
+
+            <div class="card assessment-card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="assessment-icon mb-3">
+                        🎨
+                    </div>
+
+                    <h4>
+                        Bootstrap
+                    </h4>
+
+                    <p class="text-muted">
+                        Test your understanding of Bootstrap
+                        components, grids and responsive design.
+                    </p>
+
+                    <span class="badge bg-warning text-dark">
+                        Intermediate
+                    </span>
+
+                    <span class="badge bg-info text-dark">
+                        Web Development
+                    </span>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+                            📝 20 Questions
+                        </span>
+
+                        <span>
+                            ⏱ 30 Minutes
+                        </span>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100 mt-4"
+                            onclick="startAssessment('Bootstrap')">
+
+                        Start Assessment
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!-- No Results -->
+
+    <div id="noResults"
+         class="text-center mt-5"
+         style="display:none;">
+
+        <h4>
+            No assessments found.
+        </h4>
+
+        <p class="text-muted">
+            Try changing your search or filter.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================= SAMPLE TEST QUESTIONS ================= -->
+
+<div class="container pb-5" id="assessmentQuiz" hidden>
+    <div class="filter-box mb-4">
+        <h3 class="mb-3" id="assessmentTitle">Assessment Test</h3>
+        <p class="text-muted mb-0" id="assessmentSubtitle">Select a test to begin</p>
+    </div>
+
+    <div class="module-quiz-panel" data-module="Python Fundamentals" hidden>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>1. Which of the following is a valid Python variable name?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="pythonQ1" id="pythonQ1a"><label class="form-check-label" for="pythonQ1a">2name</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ1" id="pythonQ1b"><label class="form-check-label" for="pythonQ1b">name_2</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ1" id="pythonQ1c"><label class="form-check-label" for="pythonQ1c">my-name</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ1" id="pythonQ1d"><label class="form-check-label" for="pythonQ1d">class</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>2. What is the output of:</h5>
+                <pre class="bg-light p-3 rounded"><code>print(10 // 3)</code></pre>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="pythonQ2" id="pythonQ2a"><label class="form-check-label" for="pythonQ2a">3.3</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ2" id="pythonQ2b"><label class="form-check-label" for="pythonQ2b">3</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ2" id="pythonQ2c"><label class="form-check-label" for="pythonQ2c">4</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ2" id="pythonQ2d"><label class="form-check-label" for="pythonQ2d">1</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>3. Which keyword is used to create a function in Python?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="pythonQ3" id="pythonQ3a"><label class="form-check-label" for="pythonQ3a">func</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ3" id="pythonQ3b"><label class="form-check-label" for="pythonQ3b">define</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ3" id="pythonQ3c"><label class="form-check-label" for="pythonQ3c">def</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ3" id="pythonQ3d"><label class="form-check-label" for="pythonQ3d">method</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>4. What does this code print?</h5>
+                <pre class="bg-light p-3 rounded"><code>x = [1, 2, 3]
+print(x[0])</code></pre>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="pythonQ4" id="pythonQ4a"><label class="form-check-label" for="pythonQ4a">1</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ4" id="pythonQ4b"><label class="form-check-label" for="pythonQ4b">2</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ4" id="pythonQ4c"><label class="form-check-label" for="pythonQ4c">3</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ4" id="pythonQ4d"><label class="form-check-label" for="pythonQ4d">Error</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>5. Which loop is used when the number of iterations is known?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="pythonQ5" id="pythonQ5a"><label class="form-check-label" for="pythonQ5a">while</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ5" id="pythonQ5b"><label class="form-check-label" for="pythonQ5b">for</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ5" id="pythonQ5c"><label class="form-check-label" for="pythonQ5c">if</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="pythonQ5" id="pythonQ5d"><label class="form-check-label" for="pythonQ5d">switch</label></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="module-quiz-panel" data-module="JavaScript" hidden>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>1. Which keyword is used to declare a variable in JavaScript?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="jsQ1" id="jsQ1a"><label class="form-check-label" for="jsQ1a">let</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ1" id="jsQ1b"><label class="form-check-label" for="jsQ1b">class</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ1" id="jsQ1c"><label class="form-check-label" for="jsQ1c">function</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ1" id="jsQ1d"><label class="form-check-label" for="jsQ1d">return</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>2. What is the output of:</h5>
+                <pre class="bg-light p-3 rounded"><code>console.log(typeof true)</code></pre>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="jsQ2" id="jsQ2a"><label class="form-check-label" for="jsQ2a">"boolean"</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ2" id="jsQ2b"><label class="form-check-label" for="jsQ2b">"string"</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ2" id="jsQ2c"><label class="form-check-label" for="jsQ2c">"number"</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ2" id="jsQ2d"><label class="form-check-label" for="jsQ2d">"object"</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>3. Which symbol is used for a single-line comment in JavaScript?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="jsQ3" id="jsQ3a"><label class="form-check-label" for="jsQ3a">//</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ3" id="jsQ3b"><label class="form-check-label" for="jsQ3b">#</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ3" id="jsQ3c"><label class="form-check-label" for="jsQ3c">/*</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ3" id="jsQ3d"><label class="form-check-label" for="jsQ3d">&lt;!--</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>4. What does the operator === compare?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="jsQ4" id="jsQ4a"><label class="form-check-label" for="jsQ4a">Only value</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ4" id="jsQ4b"><label class="form-check-label" for="jsQ4b">Only type</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ4" id="jsQ4c"><label class="form-check-label" for="jsQ4c">Value and type</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ4" id="jsQ4d"><label class="form-check-label" for="jsQ4d">None of the above</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>5. Which of the following is an array in JavaScript?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="jsQ5" id="jsQ5a"><label class="form-check-label" for="jsQ5a">[1, 2, 3]</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ5" id="jsQ5b"><label class="form-check-label" for="jsQ5b">{1, 2, 3}</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ5" id="jsQ5c"><label class="form-check-label" for="jsQ5c">"1, 2, 3"</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="jsQ5" id="jsQ5d"><label class="form-check-label" for="jsQ5d">(1, 2, 3)</label></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="module-quiz-panel" data-module="HTML & CSS" hidden>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>1. Which tag is used to create a heading in HTML?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="htmlQ1" id="htmlQ1a"><label class="form-check-label" for="htmlQ1a">&lt;head&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ1" id="htmlQ1b"><label class="form-check-label" for="htmlQ1b">&lt;h1&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ1" id="htmlQ1c"><label class="form-check-label" for="htmlQ1c">&lt;header&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ1" id="htmlQ1d"><label class="form-check-label" for="htmlQ1d">&lt;title&gt;</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>2. Which CSS property changes text color?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="htmlQ2" id="htmlQ2a"><label class="form-check-label" for="htmlQ2a">background-color</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ2" id="htmlQ2b"><label class="form-check-label" for="htmlQ2b">color</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ2" id="htmlQ2c"><label class="form-check-label" for="htmlQ2c">font-size</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ2" id="htmlQ2d"><label class="form-check-label" for="htmlQ2d">border</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>3. Which HTML tag is used to insert an image?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="htmlQ3" id="htmlQ3a"><label class="form-check-label" for="htmlQ3a">&lt;img&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ3" id="htmlQ3b"><label class="form-check-label" for="htmlQ3b">&lt;image&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ3" id="htmlQ3c"><label class="form-check-label" for="htmlQ3c">&lt;picture&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ3" id="htmlQ3d"><label class="form-check-label" for="htmlQ3d">&lt;src&gt;</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>4. Which CSS property makes text bold?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="htmlQ4" id="htmlQ4a"><label class="form-check-label" for="htmlQ4a">font-weight</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ4" id="htmlQ4b"><label class="form-check-label" for="htmlQ4b">text-size</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ4" id="htmlQ4c"><label class="form-check-label" for="htmlQ4c">text-bold</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ4" id="htmlQ4d"><label class="form-check-label" for="htmlQ4d">font-style</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>5. Which HTML element is used for a paragraph?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="htmlQ5" id="htmlQ5a"><label class="form-check-label" for="htmlQ5a">&lt;p&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ5" id="htmlQ5b"><label class="form-check-label" for="htmlQ5b">&lt;para&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ5" id="htmlQ5c"><label class="form-check-label" for="htmlQ5c">&lt;paragraph&gt;</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="htmlQ5" id="htmlQ5d"><label class="form-check-label" for="htmlQ5d">&lt;text&gt;</label></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="module-quiz-panel" data-module="MySQL Database" hidden>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>1. Which SQL command is used to retrieve data?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="sqlQ1" id="sqlQ1a"><label class="form-check-label" for="sqlQ1a">SELECT</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ1" id="sqlQ1b"><label class="form-check-label" for="sqlQ1b">INSERT</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ1" id="sqlQ1c"><label class="form-check-label" for="sqlQ1c">UPDATE</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ1" id="sqlQ1d"><label class="form-check-label" for="sqlQ1d">DELETE</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>2. Which keyword removes duplicate records from a query result?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="sqlQ2" id="sqlQ2a"><label class="form-check-label" for="sqlQ2a">DISTINCT</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ2" id="sqlQ2b"><label class="form-check-label" for="sqlQ2b">UNIQUE</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ2" id="sqlQ2c"><label class="form-check-label" for="sqlQ2c">FILTER</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ2" id="sqlQ2d"><label class="form-check-label" for="sqlQ2d">ORDER BY</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>3. Which clause is used to sort rows?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="sqlQ3" id="sqlQ3a"><label class="form-check-label" for="sqlQ3a">ORDER BY</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ3" id="sqlQ3b"><label class="form-check-label" for="sqlQ3b">GROUP BY</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ3" id="sqlQ3c"><label class="form-check-label" for="sqlQ3c">HAVING</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ3" id="sqlQ3d"><label class="form-check-label" for="sqlQ3d">WHERE</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>4. Which SQL statement adds new records?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="sqlQ4" id="sqlQ4a"><label class="form-check-label" for="sqlQ4a">INSERT INTO</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ4" id="sqlQ4b"><label class="form-check-label" for="sqlQ4b">ADD ROW</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ4" id="sqlQ4c"><label class="form-check-label" for="sqlQ4c">CREATE</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ4" id="sqlQ4d"><label class="form-check-label" for="sqlQ4d">ALTER</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>5. What does PRIMARY KEY do in a table?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="sqlQ5" id="sqlQ5a"><label class="form-check-label" for="sqlQ5a">Identifies each row uniquely</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ5" id="sqlQ5b"><label class="form-check-label" for="sqlQ5b">Deletes the table</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ5" id="sqlQ5c"><label class="form-check-label" for="sqlQ5c">Sorts rows</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="sqlQ5" id="sqlQ5d"><label class="form-check-label" for="sqlQ5d">Creates a backup</label></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="module-quiz-panel" data-module="Data Science" hidden>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>1. What does the mean represent in statistics?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="dsQ1" id="dsQ1a"><label class="form-check-label" for="dsQ1a">Average value</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ1" id="dsQ1b"><label class="form-check-label" for="dsQ1b">Middle value</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ1" id="dsQ1c"><label class="form-check-label" for="dsQ1c">Most frequent value</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ1" id="dsQ1d"><label class="form-check-label" for="dsQ1d">Largest value</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>2. Which Python library is commonly used for data analysis?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="dsQ2" id="dsQ2a"><label class="form-check-label" for="dsQ2a">pandas</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ2" id="dsQ2b"><label class="form-check-label" for="dsQ2b">matplotlib</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ2" id="dsQ2c"><label class="form-check-label" for="dsQ2c">numpy</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ2" id="dsQ2d"><label class="form-check-label" for="dsQ2d">all of the above</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>3. What is a model in machine learning?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="dsQ3" id="dsQ3a"><label class="form-check-label" for="dsQ3a">A trained algorithm used for prediction</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ3" id="dsQ3b"><label class="form-check-label" for="dsQ3b">A spreadsheet</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ3" id="dsQ3c"><label class="form-check-label" for="dsQ3c">A database table</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ3" id="dsQ3d"><label class="form-check-label" for="dsQ3d">A browser</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>4. Which metric is often used to measure classification accuracy?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="dsQ4" id="dsQ4a"><label class="form-check-label" for="dsQ4a">Accuracy</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ4" id="dsQ4b"><label class="form-check-label" for="dsQ4b">Height</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ4" id="dsQ4c"><label class="form-check-label" for="dsQ4c">Volume</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ4" id="dsQ4d"><label class="form-check-label" for="dsQ4d">Color</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>5. What is data cleaning?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="dsQ5" id="dsQ5a"><label class="form-check-label" for="dsQ5a">Removing errors and preparing data for analysis</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ5" id="dsQ5b"><label class="form-check-label" for="dsQ5b">Deleting all rows</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ5" id="dsQ5c"><label class="form-check-label" for="dsQ5c">Turning data into HTML</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="dsQ5" id="dsQ5d"><label class="form-check-label" for="dsQ5d">Compressing files</label></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="module-quiz-panel" data-module="Bootstrap" hidden>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>1. Bootstrap is mainly used for:</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="bsQ1" id="bsQ1a"><label class="form-check-label" for="bsQ1a">Responsive web design</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ1" id="bsQ1b"><label class="form-check-label" for="bsQ1b">Database queries</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ1" id="bsQ1c"><label class="form-check-label" for="bsQ1c">Server setup</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ1" id="bsQ1d"><label class="form-check-label" for="bsQ1d">Operating system management</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>2. Which Bootstrap class makes a container full width?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="bsQ2" id="bsQ2a"><label class="form-check-label" for="bsQ2a">container-fluid</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ2" id="bsQ2b"><label class="form-check-label" for="bsQ2b">fluid</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ2" id="bsQ2c"><label class="form-check-label" for="bsQ2c">w-100</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ2" id="bsQ2d"><label class="form-check-label" for="bsQ2d">full-width</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>3. Which Bootstrap class creates a primary button?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="bsQ3" id="bsQ3a"><label class="form-check-label" for="bsQ3a">btn btn-primary</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ3" id="bsQ3b"><label class="form-check-label" for="bsQ3b">button primary</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ3" id="bsQ3c"><label class="form-check-label" for="bsQ3c">btn-main</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ3" id="bsQ3d"><label class="form-check-label" for="bsQ3d">primary-button</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>4. Bootstrap uses which CSS framework concept?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="bsQ4" id="bsQ4a"><label class="form-check-label" for="bsQ4a">Grid system</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ4" id="bsQ4b"><label class="form-check-label" for="bsQ4b">Database model</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ4" id="bsQ4c"><label class="form-check-label" for="bsQ4c">Compiler</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ4" id="bsQ4d"><label class="form-check-label" for="bsQ4d">API layer</label></div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h5>5. Which Bootstrap class creates a card layout?</h5>
+                <div class="form-check mt-3"><input class="form-check-input" type="radio" name="bsQ5" id="bsQ5a"><label class="form-check-label" for="bsQ5a">card</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ5" id="bsQ5b"><label class="form-check-label" for="bsQ5b">panel</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ5" id="bsQ5c"><label class="form-check-label" for="bsQ5c">box</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="bsQ5" id="bsQ5d"><label class="form-check-label" for="bsQ5d">container</label></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center pb-4">
+        <button id="submitTestButton" class="btn btn-primary btn-lg" type="button">Submit Test</button>
+    </div>
+
+    <div id="assessmentResult" class="card shadow-sm mb-5" hidden>
+        <div class="card-body text-center p-4">
+            <h4 id="resultTitle" class="mb-3">Test Result</h4>
+            <div id="resultSummary" class="fs-5 fw-bold mb-3"></div>
+            <p id="resultMessage" class="text-muted mb-0"></p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="container text-center">
+
+        <h5>
+            Assessment Platform
+        </h5>
+
+        <p class="mb-0">
+            Improve your skills. Test your knowledge. Track your progress.
+        </p>
+
+        <p class="mt-3 mb-0">
+            © 2026 Assessment Platform. All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+const API_BASE_URL = 'http://localhost:5000';
+
+const uploadedMcqQuestions = {
+    Test3: [
+        { question: 'Which condition confirms that a number is prime?', options: ['It has exactly two positive divisors', 'It is divisible by 2', 'It is greater than 100', 'It ends with 1'], answer: 0 },
+        { question: 'Which two values are commonly used to start a Fibonacci series?', options: ['0 and 1', '1 and 1 only', '2 and 3', '0 and 2'], answer: 0 },
+        { question: 'How is an Armstrong number commonly checked?', options: ['Sum of powered digits equals the original number', 'Number is divisible by 2', 'Number reads the same backward', 'Digits are sorted'], answer: 0 },
+        { question: 'Which operator extracts the last digit while reversing a number?', options: ['%', '//', '**', '&'], answer: 0 },
+        { question: 'What confirms that a number is a palindrome?', options: ['It equals its reversed value', 'It is always prime', 'It has an even number of digits', 'It is divisible by 10'], answer: 0 },
+        { question: 'What is the value of 0! (zero factorial)?', options: ['0', '1', '10', 'Undefined'], answer: 1 },
+        { question: 'Which loop structure is useful for checking prime numbers in a range?', options: ['Nested loops', 'One unconditional break', 'Only a switch statement', 'No loop'], answer: 0 },
+        { question: 'Which algorithm repeatedly uses remainder to find the GCD?', options: ['Euclidean algorithm', 'Binary search', 'Bubble sort', 'Fibonacci algorithm'], answer: 0 },
+        { question: 'In the number pattern, what does the inner loop control?', options: ['How many numbers appear on each row', 'The program title', 'The user password', 'The final output color'], answer: 0 },
+        { question: 'In a number guessing game, what should happen after a guess is too low?', options: ['Tell the user to try a higher number', 'End the program as correct', 'Reverse the guess', 'Calculate factorial'], answer: 0 }
+    ]
+};
+
+async function loadUploadedAssessments() {
+    const section = document.getElementById('uploadedAssessmentsSection');
+    const container = document.getElementById('uploadedAssessmentContainer');
+
+    try {
+        const response = await fetch(API_BASE_URL + '/api/test-papers');
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || 'Unable to load test papers.');
+        }
+
+        if (!result.testPapers.length) {
+            return;
+        }
+
+        section.hidden = false;
+        container.innerHTML = result.testPapers.map(function(paper) {
+            const category = paper.category || 'Training';
+            const difficulty = paper.difficulty || 'General';
+            return `
+                <div class="col-md-6 col-lg-4 assessment-item"
+                     data-category="${category.toLowerCase()}"
+                     data-difficulty="${difficulty}">
+                    <div class="card assessment-card shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="assessment-icon mb-3">📄</div>
+                            <h4>${paper.name}</h4>
+                            <p class="text-muted">${paper.description || 'Complete this uploaded test paper assessment.'}</p>
+                            <span class="badge bg-primary badge-custom">${category}</span>
+                            <span class="badge bg-secondary badge-custom">${difficulty}</span>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <span>📝 ${paper.questions} Questions</span>
+                                <span>⏱ ${paper.duration} Minutes</span>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-4"
+                                    onclick="startUploadedAssessment('${paper.name.replace(/'/g, "\\'")}', '${API_BASE_URL}${paper.pdfUrl}')">
+                                Start Exam
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (error) {
+        container.innerHTML = '<div class="col-12"><p class="text-danger">Unable to load uploaded assessments. Please try again later.</p></div>';
+    }
+}
+
+function startUploadedAssessment(name, pdfUrl) {
+    const assessmentQuiz = document.getElementById('assessmentQuiz');
+    const assessmentTitle = document.getElementById('assessmentTitle');
+    const assessmentSubtitle = document.getElementById('assessmentSubtitle');
+    const quizPanels = document.querySelectorAll('.module-quiz-panel');
+
+    if (!confirm('Start the ' + name + ' exam?')) {
+        return;
+    }
+
+    assessmentTitle.textContent = name + ' Exam';
+    assessmentSubtitle.textContent = 'Read the questions in the uploaded PDF and complete the exam.';
+    quizPanels.forEach(function(panel) {
+        panel.hidden = true;
+    });
+
+    let examPanel = document.getElementById('uploadedExamPanel');
+    if (!examPanel) {
+        examPanel = document.createElement('div');
+        examPanel.id = 'uploadedExamPanel';
+        examPanel.className = 'card shadow-sm mb-4';
+        assessmentQuiz.appendChild(examPanel);
+    }
+
+    const questions = uploadedMcqQuestions[name];
+    if (questions) {
+        examPanel.innerHTML = '<div class="card-body p-4">' +
+            '<div class="mb-4"><label class="form-label fw-bold" for="candidateName">Candidate Name</label><input id="candidateName" class="form-control" type="text" placeholder="Enter your full name" required></div>' +
+            questions.map(function(item, index) {
+                return '<div class="mb-4"><h5>' + (index + 1) + '. ' + item.question + '</h5>' +
+                    item.options.map(function(option, optionIndex) {
+                        return '<div class="form-check mt-2"><input class="form-check-input" type="radio" name="uploadedQ' + index + '" value="' + optionIndex + '"><label class="form-check-label">' + option + '</label></div>';
+                    }).join('') + '</div>';
+            }).join('') +
+            '<button class="btn btn-success" type="button" onclick="submitUploadedMcq(\'' + name.replace(/'/g, "\\'") + '\')">Submit Exam</button>' +
+            '<a class="btn btn-outline-secondary ms-2" href="' + pdfUrl + '" target="_blank" rel="noopener noreferrer">Open Original PDF</a>' +
+            '<div id="uploadedMcqResult" class="mt-4" hidden></div></div>';
+    } else {
+        examPanel.innerHTML = '<div class="card-body p-2"><iframe title="Test paper PDF" src="' + pdfUrl + '" style="width:100%; height:75vh; border:0;"></iframe></div>';
+    }
+
+    assessmentQuiz.hidden = false;
+    assessmentQuiz.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function submitUploadedMcq(name) {
+    const questions = uploadedMcqQuestions[name];
+    const candidateNameInput = document.getElementById('candidateName');
+    const candidateName = candidateNameInput ? candidateNameInput.value.trim() : '';
+    const candidate = JSON.parse(localStorage.getItem('atlas_candidate') || 'null');
+
+    if (!candidateName) {
+        alert('Please enter your name before submitting the exam.');
+        return;
+    }
+
+    let score = 0;
+
+    questions.forEach(function(item, index) {
+        const selected = document.querySelector('input[name="uploadedQ' + index + '"]:checked');
+        if (selected && Number(selected.value) === item.answer) {
+            score++;
+        }
+    });
+
+    const result = document.getElementById('uploadedMcqResult');
+    result.textContent = 'Your score: ' + score + ' / ' + questions.length + ' (' + Math.round(score / questions.length * 100) + '%)';
+    result.className = 'alert ' + (score >= questions.length * 0.6 ? 'alert-success' : 'alert-warning') + ' mt-4';
+    result.hidden = false;
+
+    try {
+        const response = await fetch(API_BASE_URL + '/api/candidate-results', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: candidate && candidate.id,
+                candidateName,
+                testPaperName: name,
+                marks: score,
+                totalMarks: questions.length
+            })
+        });
+        const savedResult = await response.json();
+        if (!response.ok || !savedResult.success) {
+            throw new Error(savedResult.message || 'Unable to save your result.');
+        }
+        result.textContent += ' Result saved successfully.';
+    } catch (error) {
+        result.textContent += ' Result could not be saved.';
+    }
+}
+
+const assessmentAnswers = {
+    'Python Fundamentals': {
+        pythonQ1: 'pythonQ1b',
+        pythonQ2: 'pythonQ2b',
+        pythonQ3: 'pythonQ3c',
+        pythonQ4: 'pythonQ4a',
+        pythonQ5: 'pythonQ5b'
+    },
+    'JavaScript': {
+        jsQ1: 'jsQ1a',
+        jsQ2: 'jsQ2a',
+        jsQ3: 'jsQ3a',
+        jsQ4: 'jsQ4c',
+        jsQ5: 'jsQ5a'
+    },
+    'HTML & CSS': {
+        htmlQ1: 'htmlQ1b',
+        htmlQ2: 'htmlQ2b',
+        htmlQ3: 'htmlQ3a',
+        htmlQ4: 'htmlQ4a',
+        htmlQ5: 'htmlQ5a'
+    },
+    'MySQL Database': {
+        sqlQ1: 'sqlQ1a',
+        sqlQ2: 'sqlQ2a',
+        sqlQ3: 'sqlQ3a',
+        sqlQ4: 'sqlQ4a',
+        sqlQ5: 'sqlQ5a'
+    },
+    'Data Science': {
+        dsQ1: 'dsQ1a',
+        dsQ2: 'dsQ2d',
+        dsQ3: 'dsQ3a',
+        dsQ4: 'dsQ4a',
+        dsQ5: 'dsQ5a'
+    },
+    'Bootstrap': {
+        bsQ1: 'bsQ1a',
+        bsQ2: 'bsQ2a',
+        bsQ3: 'bsQ3a',
+        bsQ4: 'bsQ4a',
+        bsQ5: 'bsQ5a'
+    }
+};
+
+function startAssessment(name) {
+    const assessmentQuiz = document.getElementById('assessmentQuiz');
+    const assessmentTitle = document.getElementById('assessmentTitle');
+    const assessmentSubtitle = document.getElementById('assessmentSubtitle');
+    const resultBox = document.getElementById('assessmentResult');
+    const quizPanels = document.querySelectorAll('.module-quiz-panel');
+
+    if (!assessmentQuiz || !assessmentTitle || !assessmentSubtitle) {
+        alert('Starting ' + name + ' assessment...');
+        return;
+    }
+
+    const confirmStart = confirm('Start the ' + name + ' assessment?');
+
+    if (confirmStart) {
+        assessmentTitle.textContent = name + ' Assessment';
+        assessmentSubtitle.textContent = 'Assessment test in progress';
+
+        quizPanels.forEach(function(panel) {
+            const shouldShow = panel.dataset.module === name;
+            panel.hidden = !shouldShow;
+        });
+
+        if (resultBox) {
+            resultBox.hidden = true;
+            resultBox.querySelector('#resultSummary').textContent = '';
+            resultBox.querySelector('#resultMessage').textContent = '';
+        }
+
+        assessmentQuiz.hidden = false;
+        assessmentQuiz.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function submitAssessment() {
+    const activePanel = document.querySelector('.module-quiz-panel:not([hidden])');
+    const resultBox = document.getElementById('assessmentResult');
+    const resultSummary = document.getElementById('resultSummary');
+    const resultMessage = document.getElementById('resultMessage');
+
+    if (!activePanel || !resultBox || !resultSummary || !resultMessage) {
+        alert('Please start an assessment first.');
+        return;
+    }
+
+    const moduleName = activePanel.dataset.module;
+    const expectedAnswers = assessmentAnswers[moduleName];
+    const questionNames = Object.keys(expectedAnswers);
+    let correctCount = 0;
+
+    questionNames.forEach(function(questionName) {
+        const selectedAnswer = document.querySelector('input[name="' + questionName + '"]:checked');
+        const correctAnswerId = expectedAnswers[questionName];
+
+        if (selectedAnswer && selectedAnswer.id === correctAnswerId) {
+            correctCount++;
+        }
+    });
+
+    const totalQuestions = questionNames.length;
+    const percentage = Math.round((correctCount / totalQuestions) * 100);
+    const scoreText = correctCount + ' / ' + totalQuestions + ' correct';
+    let statusText = 'Needs improvement';
+    let badgeClass = 'text-warning';
+
+    if (percentage >= 80) {
+        statusText = 'Excellent result';
+        badgeClass = 'text-success';
+    } else if (percentage >= 60) {
+        statusText = 'Good result';
+        badgeClass = 'text-primary';
+    }
+
+    resultSummary.innerHTML = '<span class="' + badgeClass + '">' + scoreText + '</span> &nbsp;(' + percentage + '%)';
+    resultMessage.textContent = statusText + ' for the ' + moduleName + ' assessment.';
+    resultBox.hidden = false;
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+
+function filterAssessments() {
+
+    const search =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const category =
+        document
+        .getElementById("categoryFilter")
+        .value;
+
+    const difficulty =
+        document
+        .getElementById("difficultyFilter")
+        .value;
+
+    const assessments =
+        document.querySelectorAll(
+            ".assessment-item"
+        );
+
+    let visibleCount = 0;
+
+
+    assessments.forEach(function(item) {
+
+        const text =
+            item.innerText.toLowerCase();
+
+        const itemCategory =
+            item.dataset.category;
+
+        const itemDifficulty =
+            item.dataset.difficulty;
+
+
+        const matchesSearch =
+            text.includes(search);
+
+        const matchesCategory =
+            category === "all" ||
+            itemCategory === category;
+
+        const matchesDifficulty =
+            difficulty === "all" ||
+            itemDifficulty === difficulty;
+
+
+        if (
+            matchesSearch &&
+            matchesCategory &&
+            matchesDifficulty
+        ) {
+
+            item.style.display = "";
+
+            visibleCount++;
+
+        } else {
+
+            item.style.display = "none";
+
+        }
+
+    });
+
+
+    if (visibleCount === 0) {
+
+        document
+        .getElementById("noResults")
+        .style.display = "block";
+
+    } else {
+
+        document
+        .getElementById("noResults")
+        .style.display = "none";
+
+    }
+
+}
+
+
+function resetFilters() {
+
+    document
+    .getElementById("searchInput")
+    .value = "";
+
+    document
+    .getElementById("categoryFilter")
+    .value = "all";
+
+    document
+    .getElementById("difficultyFilter")
+    .value = "all";
+
+    filterAssessments();
+
+}
+
+document.getElementById('submitTestButton').addEventListener('click', submitAssessment);
+loadUploadedAssessments();
+
+</script>
+
+</body>
+</html>
+
